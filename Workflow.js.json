@@ -1,0 +1,271 @@
+{
+  "name": "My workflow 5",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Appointment Details",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Full Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Mobile Number",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Services",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "General Checkup"
+                  },
+                  {
+                    "option": "Dental Checkup"
+                  },
+                  {
+                    "option": "Orthopedic"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "35ea8163-2d63-4eb4-b429-93c19c34fae0",
+      "name": "On form submission",
+      "webhookId": "35189fc7-073d-4fc9-afd6-fcf1e158f44e"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Email }}",
+        "options": {
+          "systemMessage": "You are a helpful assistantEmail Instructions:\n\n1. After collecting all appointment details, generate an appointment confirmation email.\n\n2. Include the patient's Name, Age, Gender, Phone Number, Department, Reason for Visit, Preferred Date, and Preferred Time.\n\n3. The email subject must be:\n   \"New Appointment Request - Patient Name\"\n\n4. The email must be professional, polite, and suitable for a hospital.\n\n5. Use clear formatting with proper headings and bullet points.\n\n6. Thank the patient for choosing the clinic.\n\n7. Request the clinic staff to review and confirm the appointment.\n\n8. Do not include medical advice, diagnosis, or treatment recommendations.\n\n9. Ensure all patient information is presented accurately.\n\n10. End the email with:\n    \"Regards,\n    Healthcare Appointment Assistant\"\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "4af36a9d-b133-45bb-aeec-3766f07947e1",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "f55d8c30-38ed-4973-bd84-9ff0bb7383af",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "dXWdofSzQtSYx1jy",
+          "name": "Google Gemini(PaLM) Api account 7"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1rpc_4zQbZhiT35Cx92mgWbAnWFrq3H4CIRFpfgF6RkY",
+          "mode": "list",
+          "cachedResultName": "Hospital Booking Agent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rpc_4zQbZhiT35Cx92mgWbAnWFrq3H4CIRFpfgF6RkY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Details",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1rpc_4zQbZhiT35Cx92mgWbAnWFrq3H4CIRFpfgF6RkY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('On form submission').item.json['Full Name'] }}",
+            "Mobile Number": "={{ $('On form submission').item.json['Mobile Number'] }}",
+            "Email ": "={{ $('On form submission').item.json.Email }}",
+            "Service": "={{ $('On form submission').item.json.Services }}",
+            "Appointment Date": "={{ $now.plus({ days: 7 }).toFormat('yyyy-MM-dd') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mobile Number",
+              "displayName": "Mobile Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email ",
+              "displayName": "Email ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Service",
+              "displayName": "Service",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Appointment Date",
+              "displayName": "Appointment Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        544,
+        0
+      ],
+      "id": "b973118f-9c65-4e86-9ce2-76a899e08702",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "cPKrsE4fzj39aGXL",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['Email '] }}",
+        "subject": "Appointment Confirmation",
+        "message": "=Hello {{ $json.Name }},<br><br>\n\n🏥 <b>Appointment Confirmation</b><br><br>\n\nThank you for choosing our hospital.<br><br>\n\nWe are pleased to inform you that your appointment has been successfully scheduled.<br><br>\n\n<b>Appointment Details</b><br><br>\n\n👤 Patient Name: {{ $json.Name }}<br>\n🩺 Service: {{ $json.Service }}<br>\n📅 Appointment Date: {{ $json['Appointment Date'] }}<br><br>\n\n<b>Important Instructions:</b><br>\n• Please arrive at least 15 minutes before your appointment.<br>\n• Carry a valid ID proof and any relevant medical records.<br>\n• If you are unable to attend, please inform us in advance.<br>\n• For assistance, kindly reply to this email.<br><br>\n\nThank you for trusting our healthcare services.<br><br>\n\nBest Regards,<br>\nAppointments Team<br>\nHealthcare Clinic",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        736,
+        0
+      ],
+      "id": "ccb33b89-1662-4a57-b26f-f3dbbe597d94",
+      "name": "Send a message",
+      "webhookId": "f1b07388-a2fb-4816-bc84-6d92ef77b214",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "JUFtfQVmWSzKAjHu",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b211a1b5-ef30-4726-ae76-afaf85f481e9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bc22e62ee0ec429355d30c869841b81a7098aaa9eac601dbd99f70536ad6e025"
+  },
+  "nodeGroups": [],
+  "id": "TzEj72KmCCKPsENk",
+  "tags": []
+}
