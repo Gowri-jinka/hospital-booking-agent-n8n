@@ -8,6 +8,28 @@ The workflow integrates Google Gemini AI, Google Sheets, and Gmail to create a c
 
 ---
 
+Live Demo
+
+Users can access the appointment booking form using the link below:
+
+Appointment Form:
+
+https://firstn8ntask.app.n8n.cloud/form/35189fc7-073d-4fc9-afd6-fcf1e158f44e
+
+Demo Workflow
+Open the appointment form.
+Enter:
+Full Name
+Mobile Number
+Email Address
+Required Service
+Submit the form.
+Data is automatically processed by Google Gemini AI.
+Patient details are stored in Google Sheets.
+Appointment date is automatically assigned.
+A confirmation email is sent to the patient. 
+
+---
 ## Features
 
 ### Patient Registration Form
