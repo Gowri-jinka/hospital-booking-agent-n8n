@@ -155,17 +155,17 @@ Through this project, I learned:
 
 ## Screenshots
 
--- WORKFLOW
+## WORKFLOW
 <img width="1919" height="967" alt="workflow" src="https://github.com/user-attachments/assets/f4000386-4377-44fa-be90-77e3cc7469cf" />
 
 
--- APPOINTMENT FORM
+## APPOINTMENT FORM
 <img width="873" height="946" alt="appointment-form" src="https://github.com/user-attachments/assets/c0dfb443-7241-4924-b504-32b8fea3d6b3" />
 
 
--- CONFIRMATION-MAIL
+## CONFIRMATION-MAIL
 <img width="646" height="804" alt="confirmation-email" src="https://github.com/user-attachments/assets/38efb14a-9e51-4373-8eaa-3dec2f035861" />
 
 
--- GOOGLE SHEET
+## GOOGLE SHEET
 <img width="1919" height="969" alt="google-sheet" src="https://github.com/user-attachments/assets/28c42aea-068e-4409-b123-6cfc63479e4c" />
